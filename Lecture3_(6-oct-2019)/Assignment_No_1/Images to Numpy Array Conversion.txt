@@ -1,0 +1,40 @@
+import numpy as np
+import matplotlib.pylab as plt
+from PIL import Image
+import os
+
+
+def photosAppend():
+    path = "photos"
+    photospath = []
+    if(os.path.exists(path)):
+        for root,d_names,f_names in os.walk(path):
+            for f in f_names:
+                photospath = np.append(photospath,os.path.join(root, f))    
+    return photospath
+
+
+
+def photosSave():
+    photospath=photosAppend()
+    
+    photos = np.zeros([photospath.size,200,200,3])
+
+    for i in range(photospath.size):
+        ima=Image.open(photospath[i]).resize((200,200))
+        ima.save(photospath[i])
+        im = plt.imread(photospath[i])
+        print(type(im))
+        print(im.shape)
+        photos[i] = im
+
+    return photos   
+
+
+def main():
+    return photosSave()
+    
+
+if __name__ == "__main__": 
+    print(main())
+    
